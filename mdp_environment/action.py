@@ -12,9 +12,9 @@ class Action:
 class ActionGenerator:
 	"""docstring for ActionGenerator"""
 	uid = -1
-	unames = set()
 	def __init__(self, *args):
 		self.args = args
+		self.unames = set()
 
 	def generate_action(self, **kwargs):
 		if len(self.args) != len(kwargs.keys()):

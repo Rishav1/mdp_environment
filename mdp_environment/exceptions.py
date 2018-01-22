@@ -32,8 +32,6 @@ class StateNameNotUnique(Exception):
 	def __init__(self, dErrorArguments):
 		Exception.__init__(self, "State with name {0} has already been defined.".format(dErrorArguments))
 		self.dErrorArguments = dErrorArguments
-		
-
 
 class ActionAlreadyPresent(Exception):
 	"""docstring for ActionAlreadyPresent(Exception)"""
@@ -69,11 +67,34 @@ class ActionNameNotUnique(Exception):
 		Exception.__init__(self, "Action with name {0} has already been defined.".format(dErrorArguments))
 		self.dErrorArguments = dErrorArguments
 
-
-class TransitionProbabilityError:
-	"""docstring for TransitionProbabilityError"""
+class ProbabilityError(Exception):
+	"""docstring for ProbabilityError"""
 	def __init__(self, dErrorArguments):
-		Exception.__init__(self, "Transition Probability from state {0} on action {1} \
-			does not sum to unity".format(dErrorArguments[0], dErrorArguments[1]))
+		Exception.__init__(self, "Sum of probabilities in {0} is not unity".format(dErrorArguments))
 		self.dErrorArguments = dErrorArguments
-		
+
+class MDPModelFinalized(Exception):
+	"""docstring for MDPModelFinalized"""
+	def __init__(self):
+		Exception.__init__(self, "MDP Model is already finalized.")
+
+class MDPModelNotFinalized(Exception):
+	"""docstring for MDPModelNotFinalized"""
+	def __init__(self):
+		Exception.__init__(self, "MDP Model hasn't been finalized.")
+
+class MDPModelNotInitialized(Exception):
+	"""docstring for MDPModelNotInitialized"""
+	def __init__(self):
+		Exception.__init__(self, "MDP Model hasn't been initialized.")
+
+class InitStateNotSet(Exception):
+	"""docstring for InitStateNotSet"""
+	def __init__(self):
+		Exception.__init__(self, "Start State not set.")
+
+class InvalidAction(Exception):
+	"""docstring for InvalidAction"""
+	def __init__(self, dErrorArguments):
+		Exception.__init__(self, "Action {0} at state {0} is not feasible.".format(dErrorArguments[1], dErrorArguments[0]))
+		self.dErrorArguments = dErrorArguments
