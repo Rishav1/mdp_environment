@@ -1,6 +1,9 @@
 import numpy as np
 from mdp_environment.exceptions import *
 import warnings
+import networkx as nx 
+import matplotlib.pyplot as plt 
+import os
 
 class MDPModel:
 	"""docstring for MDPModel"""
@@ -17,6 +20,7 @@ class MDPModel:
 		self.finalized = False
 		self.initialized = False
 		self.terminated = True
+		self.visual_graph = nx.MultiDiGraph()
 
 	def add_states(self, input_states):
 		if self.finalized:
@@ -71,6 +75,8 @@ class MDPModel:
 			self.transitions[state.id][action.id] = p_transistion
 		else:
 			self.transitions[state.id] = {action.id: p_transistion}
+		for tstate, prob in p_transistion.items():
+			self.visual_graph.add_edge(state.name, tstate.name, weight=prob, label="P({0})={1}".format(action.name, prob))
 		return self
 
 	def add_init_states(self, init_states):
@@ -123,3 +129,14 @@ class MDPModel:
 
 	def is_terminated(self):
 		return self.terminated
+
+	def visualize(self):
+		if not self.finalized:
+			raise MDPModelNotFinalized
+		# plt.figure()
+		# plt.draw_networkx(self.visual_graph)
+		# plt.axis('off');
+		# plt.savefig(self.name + ".svg", bbox_inches='tight')
+		nx.drawing.nx_pydot.write_dot(self.visual_graph, '{0}.dot'.format(self.name))
+		os.system("neato -Tps -Goverlap=scale {0}.dot -o {0}.ps; convert {0}.ps {0}.png; rm {0}.dot {0}.ps".format(self.name))
+
