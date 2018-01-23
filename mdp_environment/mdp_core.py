@@ -32,6 +32,11 @@ class MDPModel:
 		return self
 
 	def get_states(self, state_ids):
+		if type(state_ids) == int:
+			if state_ids not in self.states.keys():
+				raise StateNotPresent(state_ids)
+			else:
+				return self.states[state_ids]
 		for state_id in state_ids:
 			if state_id not in self.states.keys():
 				raise StateNotPresent(state_id)
@@ -48,6 +53,9 @@ class MDPModel:
 		return self
 
 	def get_actions(self, action_ids):
+		if type(action_ids) == int:
+			if action_ids not in self.actions.keys():
+				return self.actions[action_ids]
 		for action_id in action_ids:
 			if action_id not in self.actions.keys():
 				raise ActionNotPresent(action_id)
@@ -133,10 +141,6 @@ class MDPModel:
 	def visualize(self):
 		if not self.finalized:
 			raise MDPModelNotFinalized
-		# plt.figure()
-		# plt.draw_networkx(self.visual_graph)
-		# plt.axis('off');
-		# plt.savefig(self.name + ".svg", bbox_inches='tight')
 		nx.drawing.nx_pydot.write_dot(self.visual_graph, '{0}.dot'.format(self.name))
 		os.system("neato -Tps -Goverlap=scale {0}.dot -o {0}.ps; convert {0}.ps {0}.png; rm {0}.dot {0}.ps".format(self.name))
 
