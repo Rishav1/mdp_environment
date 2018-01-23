@@ -1,6 +1,6 @@
 import pytest
-from mdp_environment.action import ActionGenerator
-from mdp_environment.state import StateGenerator
+from mdp_environment.action import ActionGenerator, Action
+from mdp_environment.state import StateGenerator, State
 from mdp_environment.mdp_core import MDPModel
 from mdp_environment.exceptions import *
 
@@ -21,9 +21,10 @@ def test_state_not_present():
 	s3 = g.generate_state(name='s3', reward=0)
 	m = MDPModel('Test')
 	m.add_states([s0, s2])
-	print(m.states)
 	with pytest.raises(StateNotPresent):
 		list(m.get_states([s1.id, s3.id]))
+	assert type(next(m.get_states(s0.id))) == State
+
 
 def test_action_duplicate_add():
 	g = ActionGenerator('name', 'reward')
@@ -45,6 +46,7 @@ def test_action_not_present():
 	print(m.states)
 	with pytest.raises(ActionNotPresent):
 		list(m.get_actions([a1.id, a3.id]))
+	assert type(next(m.get_actions(a0.id))) == Action
 
 def test_faulty_transition_entry():
 	s = StateGenerator('name', 'reward')

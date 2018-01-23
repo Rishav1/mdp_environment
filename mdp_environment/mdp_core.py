@@ -32,11 +32,11 @@ class MDPModel:
 		return self
 
 	def get_states(self, state_ids):
-		if type(state_ids) == int:
+		if type(state_ids) != list:
 			if state_ids not in self.states.keys():
 				raise StateNotPresent(state_ids)
 			else:
-				return self.states[state_ids]
+				yield self.states[state_ids]
 		for state_id in state_ids:
 			if state_id not in self.states.keys():
 				raise StateNotPresent(state_id)
@@ -53,9 +53,11 @@ class MDPModel:
 		return self
 
 	def get_actions(self, action_ids):
-		if type(action_ids) == int:
+		if type(action_ids) != list:
 			if action_ids not in self.actions.keys():
-				return self.actions[action_ids]
+				raise ActionNotPresent(action_ids)
+			else:
+				yield self.actions[action_ids]
 		for action_id in action_ids:
 			if action_id not in self.actions.keys():
 				raise ActionNotPresent(action_id)
@@ -112,6 +114,7 @@ class MDPModel:
 		index = np.where(sample[0]==1)[0][0]
 		self.current_state = list(self.init_states.keys())[index]
 		self.initialized = True
+		self.terminated = False
 		return self.current_state
 
 	def transition(self, action):
