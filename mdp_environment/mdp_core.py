@@ -1,8 +1,7 @@
 import numpy as np
 from mdp_environment.exceptions import *
 import warnings
-import networkx as nx 
-import matplotlib.pyplot as plt 
+import networkx as nx
 import os
 
 class MDPModel:
@@ -80,7 +79,7 @@ class MDPModel:
 			raise ProbabilityError(p_transistion.values())
 		if state.id in self.transitions:
 			if action.id in self.transitions[state.id]:
-				warnings.warn("Chaging transition probability at {0}.".format((state.id, actions.id)))
+				warnings.warn("Chaging transition probability at {0}.".format((state.id, action.id)))
 		if state.id in self.transitions.keys():
 			self.transitions[state.id][action.id] = p_transistion
 		else:
@@ -125,8 +124,8 @@ class MDPModel:
 		if action.id not in self.transitions[self.current_state.id]:
 			raise InvalidAction((self.current_state, action))
 		sample = np.random.multinomial(
-			1, 
-			list(self.transitions[self.current_state.id][action.id].values()), 
+			1,
+			list(self.transitions[self.current_state.id][action.id].values()),
 			1
 		)
 		index = np.where(sample[0]==1)[0][0]
@@ -146,4 +145,3 @@ class MDPModel:
 			raise MDPModelNotFinalized
 		nx.drawing.nx_pydot.write_dot(self.visual_graph, '{0}.dot'.format(self.name))
 		os.system("neato -Tps -Goverlap=scale {0}.dot -o {0}.ps; convert {0}.ps {0}.png; rm {0}.dot {0}.ps".format(self.name))
-
