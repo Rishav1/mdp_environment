@@ -6,7 +6,7 @@ import os
 
 class MDPModel:
 	"""docstring for MDPModel"""
-	def __init__(self, name, states = None, actions = None, transitions = None, init_states = None):
+	def __init__(self, name, states = None, actions = None, transitions = None, init_states = None, final_states = None):
 		self.name = name
 		if states is None:
 			self.states = {}
@@ -16,6 +16,8 @@ class MDPModel:
 			self.transitions = {}
 		if init_states is None:
 			self.init_states = {}
+		if final_states is None:
+			self.final_states = []
 		self.finalized = False
 		self.initialized = False
 		self.terminated = True
@@ -101,6 +103,15 @@ class MDPModel:
 		self.init_states = init_states
 		return self
 
+	def add_final_states(self, final_states):
+		if self.finalized:
+			raise MDPModelFinalized
+		for state in final_states:
+			if state.id not in self.states:
+				raise StateNotPresent(state.id)
+		self.final_states.extend(final_states)
+		return self
+
 	def finalize(self):
 		if not self.init_states:
 			raise InitStateNotSet
@@ -131,7 +142,7 @@ class MDPModel:
 		index = np.where(sample[0]==1)[0][0]
 		self.current_state = list(self.transitions[self.current_state.id][action.id].keys())[index]
 
-		if self.current_state.id not in self.transitions:
+		if self.current_state.id not in self.transitions or current_state.id in self.final_states:
 			self.terminated = True
 			self.initialized = False
 
