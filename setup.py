@@ -10,5 +10,5 @@ setup(name='mdp_environment',
       license='MIT',
       url='https://github.com/Rishav1/mdp_environment',
       py_modules=['mdp_environment'],
-      requires=['pytest', 'networkx', 'matplotlib'],
+      install_requires=['pytest', 'networkx', 'pydot', 'GraphViz'],
       zip_safe=False)
