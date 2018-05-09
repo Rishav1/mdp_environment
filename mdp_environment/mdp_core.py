@@ -17,7 +17,7 @@ class MDPModel:
 		if init_states is None:
 			self.init_states = {}
 		if final_states is None:
-			self.final_states = []
+			self.final_states = {}
 		self.finalized = False
 		self.initialized = False
 		self.terminated = True
@@ -109,7 +109,7 @@ class MDPModel:
 		for state in final_states:
 			if state.id not in self.states:
 				raise StateNotPresent(state.id)
-		self.final_states.extend(final_states)
+			self.final_states[state.id] = state
 		return self
 
 	def finalize(self):
@@ -142,7 +142,7 @@ class MDPModel:
 		index = np.where(sample[0]==1)[0][0]
 		self.current_state = list(self.transitions[self.current_state.id][action.id].keys())[index]
 
-		if self.current_state.id not in self.transitions or current_state.id in self.final_states:
+		if (self.current_state.id not in self.transitions) or (self.current_state.id in self.final_states):
 			self.terminated = True
 			self.initialized = False
 
