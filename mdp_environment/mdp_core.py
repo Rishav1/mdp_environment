@@ -19,6 +19,7 @@ class MDPModel:
 		if final_states is None:
 			self.final_states = {}
 		self.finalized = False
+		self.step=0
 		self.initialized = False
 		self.terminated = True
 		self.visual_graph = nx.MultiDiGraph()
@@ -103,13 +104,14 @@ class MDPModel:
 		self.init_states = init_states
 		return self
 
-	def add_final_states(self, final_states):
+	def add_final_states(self, final_states, final_step=100):
 		if self.finalized:
 			raise MDPModelFinalized
 		for state in final_states:
 			if state.id not in self.states:
 				raise StateNotPresent(state.id)
 			self.final_states[state.id] = state
+		self.final_step = final_step
 		return self
 
 	def finalize(self):
@@ -141,10 +143,11 @@ class MDPModel:
 		)
 		index = np.where(sample[0]==1)[0][0]
 		self.current_state = list(self.transitions[self.current_state.id][action.id].keys())[index]
-
-		if (self.current_state.id not in self.transitions) or (self.current_state.id in self.final_states):
+		self.step += 1
+		if (self.current_state.id not in self.transitions) or (self.current_state.id in self.final_states) or (self.step == self.final_step):
 			self.terminated = True
 			self.initialized = False
+			self.step = 0
 
 		return self.current_state
 
