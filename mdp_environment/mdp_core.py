@@ -20,6 +20,7 @@ class MDPModel:
 			self.final_states = {}
 		self.finalized = False
 		self.step=0
+		self.final_step=-1
 		self.initialized = False
 		self.terminated = True
 		self.visual_graph = nx.MultiDiGraph()
