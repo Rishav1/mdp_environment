@@ -1,8 +1,8 @@
 import pytest
-from mdp_environment.action import ActionGenerator, Action
-from mdp_environment.state import StateGenerator, State
-from mdp_environment.mdp_core import MDPModel
-from mdp_environment.exceptions import *
+from mdp_environment.utils.action import ActionGenerator, Action
+from mdp_environment.utils.state import StateGenerator, State
+from mdp_environment.utils.mdp_core import MDPModel
+from mdp_environment.utils.exceptions import *
 
 def test_state_duplicate_add():
 	g = StateGenerator('name', 'reward')

@@ -1,3 +1,5 @@
-from mdp_environment.mdp_core import MDPModel
-from mdp_environment.state import StateGenerator
-from mdp_environment.action import ActionGenerator
+from gym.envs.registration import register
+
+register(
+	id='mdp-v0', 
+	entry_point='mdp_environment.envs:MdpEnvLin', )

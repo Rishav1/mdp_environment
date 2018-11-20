@@ -1,4 +1,4 @@
-from mdp_environment.exceptions import *
+from mdp_environment.utils.exceptions import *
 
 class State:
 	"""docstring for State"""

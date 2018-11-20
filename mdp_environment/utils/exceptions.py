@@ -1,3 +1,10 @@
+class DefaultException(Exception):
+	"""docstring for DefaultException(Exception)"""
+	def __init__(self, m):
+		self.m = m
+
+	def __str__(self):
+		return self.m
 
 class StateAlreadyPresent(Exception):
 	"""docstring for StateAlreadyPresent(Exception)"""

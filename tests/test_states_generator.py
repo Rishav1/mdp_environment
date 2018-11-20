@@ -1,5 +1,5 @@
-from mdp_environment.state import State, StateGenerator
-from mdp_environment.exceptions import *
+from mdp_environment.utils.state import State, StateGenerator
+from mdp_environment.utils.exceptions import *
 import pytest
 
 def test_argument_mismatch():

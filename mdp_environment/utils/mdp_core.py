@@ -1,5 +1,5 @@
 import numpy as np
-from mdp_environment.exceptions import *
+from mdp_environment.utils.exceptions import *
 import warnings
 import networkx as nx
 import os
@@ -105,7 +105,7 @@ class MDPModel:
 		self.init_states = init_states
 		return self
 
-	def add_final_states(self, final_states, final_step=100):
+	def add_final_states(self, final_states, final_step=-1):
 		if self.finalized:
 			raise MDPModelFinalized
 		for state in final_states:
@@ -155,8 +155,8 @@ class MDPModel:
 	def is_terminated(self):
 		return self.terminated
 
-	def visualize(self):
+	def visualize(self, path="/tmp"):
 		if not self.finalized:
 			raise MDPModelNotFinalized
-		nx.drawing.nx_pydot.write_dot(self.visual_graph, '{0}.dot'.format(self.name))
-		os.system("neato -Tps -Goverlap=scale {0}.dot -o {0}.ps; convert {0}.ps {0}.png; rm {0}.dot {0}.ps".format(self.name))
+		nx.drawing.nx_pydot.write_dot(self.visual_graph, '{0}/{1}.dot'.format(path, self.name))
+		os.system("neato -Tps -Goverlap=scale {0}/{1}.dot -o {0}/{1}.ps; convert {0}/{1}.ps {0}/{1}.png; rm {0}/{1}.dot {0}/{1}.ps".format(path, self.name))

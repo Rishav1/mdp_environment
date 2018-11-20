@@ -1,5 +1,5 @@
-from mdp_environment.action import Action, ActionGenerator
-from mdp_environment.exceptions import *
+from mdp_environment.utils.action import ActionGenerator
+from mdp_environment.utils.exceptions import *
 import pytest
 
 def test_argument_mismatch():
