@@ -4,8 +4,9 @@ from mdp_environment.utils.state import StateGenerator
 from mdp_environment.utils.action import ActionGenerator
 from mdp_environment.utils.mdp_core import MDPModel
 import numpy as np
+from scipy.stats import binom
 
-class MdpEnvLin(gym.Env):
+class MdpEnvLinStatic(gym.Env):
   metadata = {'render.modes': ['human']}
 
   def __init__(self, seed=-1, size=10, prob=0.2, path="/tmp"):
@@ -32,7 +33,7 @@ class MdpEnvLin(gym.Env):
     mdp = MDPModel('MdpEnvLin') \
       .add_states(states) \
       .add_actions(actions) \
-      .add_init_states({states[np.random.binomial(size - 1, prob)]: 1}) \
+      .add_init_states({states[1 + np.random.binomial(size - 3, prob)]: 1}) \
       .add_final_states([states[x] for x in [0, size - 1]])
 
     for i in range(size - 2):
@@ -60,3 +61,44 @@ class MdpEnvLin(gym.Env):
 
   def render(self, mode='human', close=False):
     ...
+
+class MdpEnvLinVariable(MdpEnvLinStatic):
+
+  def __init__(self, seed=-1, size=10, prob=0.2, path="/tmp"):
+    MdpEnvLinStatic.__init__(self, seed, size, prob, path)
+    self.env = self._create_mdp(path, prob, size, seed)
+
+  def _create_mdp(self, path, prob, size, seed):
+    def _fill_reward(x):
+      if (x == 0):
+        return 0.1
+      elif (x == size - 1):
+        return 1
+      else:
+        return 0
+
+    if(seed!=-1):
+      np.random.seed(seed)
+
+    stateGenerator = StateGenerator('name', 'reward')
+    actionGenerator = ActionGenerator('name')
+    states = [stateGenerator.generate_state(name="s" + str(x), reward=_fill_reward(x)) for x in range(size)]
+    actions = [actionGenerator.generate_action(name=name) for name in ['LEFT', 'RIGHT']]
+
+    # Initializing the states of the mdp with binomial distribution
+    init_states = dict(zip(states, [0] + [binom.pmf(i, size - 3, prob) for i in range(size - 2)] + [0]))
+
+    mdp = MDPModel('MdpEnvLin') \
+      .add_states(states) \
+      .add_actions(actions) \
+      .add_init_states(init_states) \
+      .add_final_states([states[x] for x in [0, size - 1]])
+
+    for i in range(size - 2):
+      mdp \
+        .add_transition(states[i + 1], actions[0], {states[i]: 1}) \
+        .add_transition(states[i + 1], actions[1], {states[i + 2]: 1})
+    # Visualize the MDP
+    mdp.finalize()
+    mdp.visualize(path)
+    return mdp

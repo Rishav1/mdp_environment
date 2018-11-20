@@ -17,6 +17,35 @@ for _ in range(1000):
 
 ```
 
-The "mdp-v0" is a linear chain of 10 states, with initial state selected via binomial distribution(trials=9, prob=0.2). The final states are at s0 and s10. Rewards are 0 for any transition except for terninating transitions. Terminating transition to state s0 is 0.1, while that to s10 is 1.
+There are two custom MDP environments with the following details.
 
+- **mdp-v0**: 
+  - **S**: <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\{S_0,&space;S_1,...,&space;S_{10}\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\{S_0,&space;S_1,...,&space;S_{9}\}" title="\{S_0, S_1,..., S_{9}\}" /></a>
+  
+  - **A**: <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\{LEFT,&space;RIGHT\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\{LEFT,&space;RIGHT\}" title="\{LEFT, RIGHT\}" /></a>
+  
+  - **T**: <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;T(S_i,LEFT)&space;=&space;S_{i-1}&space;\quad&space;\&&space;\quad&space;T(S_i,RIGHT)&space;=&space;S_{i&plus;1}&space;\&space;\forall&space;i&space;\in&space;\{1,&space;2,&space;..,&space;8\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;T(S_i,LEFT)&space;=&space;S_{i-1}&space;\quad&space;\&&space;\quad&space;T(S_i,RIGHT)&space;=&space;S_{i&plus;1}&space;\&space;\forall&space;i&space;\in&space;\{1,&space;2,&space;..,&space;8\}" title="T(S_i,LEFT) = S_{i-1} \quad \& \quad T(S_i,RIGHT) = S_{i+1} \ \forall i \in \{1, 2, .., 8\}" /></a>
+  
+  - **R**: <a href="https://www.codecogs.com/eqnedit.php?latex=R(S_1,&space;LEFT)&space;=&space;0.1,\quad&space;R(S_8,&space;RIGHT)&space;=&space;1&space;\quad&space;\&&space;\quad&space;R(S,&space;\cdot)&space;=&space;0&space;\&space;\forall&space;S&space;\neq&space;S_1,&space;S_2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?R(S_1,&space;LEFT)&space;=&space;0.1,\quad&space;R(S_8,&space;RIGHT)&space;=&space;1&space;\quad&space;\&&space;\quad&space;R(S,&space;\cdot)&space;=&space;0&space;\&space;\forall&space;S&space;\neq&space;S_1,&space;S_2" title="R(S_1, LEFT) = 0.1,\quad R(S_8, RIGHT) = 1 \quad \& \quad R(S, \cdot) = 0 \ \forall S \neq S_1, S_2" /></a>
+  
+  - **P**: <a href="https://www.codecogs.com/eqnedit.php?latex=P(S_{i&plus;1})&space;=&space;1,&space;\&space;s.t.&space;\&space;i&space;\sim&space;Binomial(N&space;=&space;7,&space;p&space;=&space;0.2)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(S_{i&plus;1})&space;=&space;1,&space;\&space;s.t.&space;\&space;i&space;\sim&space;Binomial(N&space;=&space;7,&space;p&space;=&space;0.2)" title="P(S_{i+1}) = 1, \ s.t. \ i \sim Binomial(N = 7, p = 0.2)" /></a>
+  
+  - **γ**: 1
+   
+
+- **mdp-v1**: 
+  - **S**: <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\{S_0,&space;S_1,...,&space;S_{10}\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\{S_0,&space;S_1,...,&space;S_{9}\}" title="\{S_0, S_1,..., S_{9}\}" /></a>
+  
+  - **A**: <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;\{LEFT,&space;RIGHT\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;\{LEFT,&space;RIGHT\}" title="\{LEFT, RIGHT\}" /></a>
+  
+  - **T**: <a href="https://www.codecogs.com/eqnedit.php?latex=\inline&space;T(S_i,LEFT)&space;=&space;S_{i-1}&space;\quad&space;\&&space;\quad&space;T(S_i,RIGHT)&space;=&space;S_{i&plus;1}&space;\&space;\forall&space;i&space;\in&space;\{1,&space;2,&space;..,&space;8\}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\inline&space;T(S_i,LEFT)&space;=&space;S_{i-1}&space;\quad&space;\&&space;\quad&space;T(S_i,RIGHT)&space;=&space;S_{i&plus;1}&space;\&space;\forall&space;i&space;\in&space;\{1,&space;2,&space;..,&space;8\}" title="T(S_i,LEFT) = S_{i-1} \quad \& \quad T(S_i,RIGHT) = S_{i+1} \ \forall i \in \{1, 2, .., 8\}" /></a>
+  
+  - **R**: <a href="https://www.codecogs.com/eqnedit.php?latex=R(S_1,&space;LEFT)&space;=&space;0.1,\quad&space;R(S_8,&space;RIGHT)&space;=&space;1&space;\quad&space;\&&space;\quad&space;R(S,&space;\cdot)&space;=&space;0&space;\&space;\forall&space;S&space;\neq&space;S_1,&space;S_2" target="_blank"><img src="https://latex.codecogs.com/gif.latex?R(S_1,&space;LEFT)&space;=&space;0.1,\quad&space;R(S_8,&space;RIGHT)&space;=&space;1&space;\quad&space;\&&space;\quad&space;R(S,&space;\cdot)&space;=&space;0&space;\&space;\forall&space;S&space;\neq&space;S_1,&space;S_2" title="R(S_1, LEFT) = 0.1,\quad R(S_8, RIGHT) = 1 \quad \& \quad R(S, \cdot) = 0 \ \forall S \neq S_1, S_2" /></a>
+  
+  - **P**: <a href="https://www.codecogs.com/eqnedit.php?latex=P(S_{i&plus;1})&space;=&space;BinomialPDF(x&space;=&space;i,&space;N&space;=&space;7,&space;p&space;=&space;0.2),&space;\&space;P(S_0)&space;=&space;0,&space;\&space;P(S_9)&space;=&space;0" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(S_{i&plus;1})&space;=&space;BinomialPDF(x&space;=&space;i,&space;N&space;=&space;7,&space;p&space;=&space;0.2),&space;\&space;P(S_0)&space;=&space;0,&space;\&space;P(S_9)&space;=&space;0" title="P(S_{i+1}) = BinomialPDF(x = i, N = 7, p = 0.2), \ P(S_0) = 0, \ P(S_9) = 0" /></a>
+  
+  - **γ**: 1
+   
+
+The MDP chain looks like this. For both the MPDs, the parameter N and p are adjustible.
 ![MDP transtion](https://i.imgur.com/kSYCUEx.png)
