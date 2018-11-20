@@ -17,6 +17,6 @@ for _ in range(1000):
 
 ```
 
-The "mdp-v0" is a linear chain of 11 states, with initial state selected via binomial distribution(size=10, prob=5). The final states are at s0, s5, s10. Rewards are 0 for any transition except for terninating transitions. Terminating transition to state s5 is 0.1, while that to s0 or s10 is 1.
+The "mdp-v0" is a linear chain of 10 states, with initial state selected via binomial distribution(trials=9, prob=0.2). The final states are at s0 and s10. Rewards are 0 for any transition except for terninating transitions. Terminating transition to state s0 is 0.1, while that to s10 is 1.
 
 ![MDP transtion](https://i.imgur.com/kSYCUEx.png)
