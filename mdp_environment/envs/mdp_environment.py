@@ -92,7 +92,7 @@ class MdpEnvLinVariable(MdpEnvLinStatic):
       .add_states(states) \
       .add_actions(actions) \
       .add_init_states(init_states) \
-      .add_final_states([states[x] for x in [0, size - 1]])
+      .add_final_states([states[x] for x in [0, size - 1]], 100)
 
     for i in range(size - 2):
       mdp \
