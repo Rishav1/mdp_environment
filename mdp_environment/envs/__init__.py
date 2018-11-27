@@ -1,1 +1,1 @@
-from mdp_environment.envs.mdp_environment import MdpEnvLinStatic, MdpEnvLinVariable
+from mdp_environment.envs.mdp_environment import MdpEnvLinStatic, MdpEnvLinVariable, MdpEnvPlanarStatic, MdpEnvPlanarVariable

@@ -7,3 +7,11 @@ register(
 register(
 	id='mdp-v1',
 	entry_point='mdp_environment.envs:MdpEnvLinVariable')
+
+register(
+	id='mdp-v2',
+	entry_point='mdp_environment.envs:MdpEnvPlanarStatic')
+
+register(
+	id='mdp-v3',
+	entry_point='mdp_environment.envs:MdpEnvPlanarVariable')
