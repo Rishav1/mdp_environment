@@ -159,4 +159,4 @@ class MDPModel:
 		if not self.finalized:
 			raise MDPModelNotFinalized
 		nx.drawing.nx_pydot.write_dot(self.visual_graph, '{0}/{1}.dot'.format(path, self.name))
-		os.system("neato -Tps -Goverlap=scale {0}/{1}.dot -o {0}/{1}.ps; convert {0}/{1}.ps {0}/{1}.png; rm {0}/{1}.dot {0}/{1}.ps".format(path, self.name))
+		os.system("neato -Tps -Goverlap=scale {0}/{1}.dot -o {0}/{1}.ps; convert {0}/{1}.ps {0}/{1}.png; #rm {0}/{1}.dot {0}/{1}.ps".format(path, self.name))

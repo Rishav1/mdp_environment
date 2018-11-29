@@ -1,5 +1,6 @@
 import gym
 from gym import spaces
+from gym.utils import seeding
 from mdp_environment.utils.state import StateGenerator
 from mdp_environment.utils.action import ActionGenerator
 from mdp_environment.utils.mdp_core import MDPModel
@@ -9,12 +10,17 @@ from scipy.stats import binom
 class MdpEnvLinStatic(gym.Env):
   metadata = {'render.modes': ['human']}
 
-  def __init__(self, seed=-1, size=10, prob=0.2, path="/tmp"):
-    self.env = self._create_mdp(path, prob, size, seed)
+  def __init__(self, size=10, prob=0.2, path="/tmp"):
+    self.env = self._create_mdp(path, prob, size)
     self.observation_space = spaces.Discrete(size+1)
     self.action_space=spaces.Discrete(2)
 
-  def _create_mdp(self, path, prob, size, seed):
+  def seed(self, seed=None):
+    self.np_random, seed = seeding.np_random(seed)
+    np.random.seed(seed)
+    return [seed]
+
+  def _create_mdp(self, path, prob, size):
     def _fill_reward(x):
       if (x == 0):
         return 0.1
@@ -22,9 +28,6 @@ class MdpEnvLinStatic(gym.Env):
         return 1
       else:
         return 0
-
-    if(seed!=-1):
-      np.random.seed(seed)
 
     stateGenerator = StateGenerator('name', 'reward')
     actionGenerator = ActionGenerator('name')
@@ -42,7 +45,7 @@ class MdpEnvLinStatic(gym.Env):
         .add_transition(states[i + 1], actions[1], {states[i + 2]: 1})
     # Visualize the MDP
     mdp.finalize()
-    mdp.visualize(path)
+    # mdp.visualize(path)
     return mdp
 
   def step(self, action_id):
@@ -66,11 +69,11 @@ class MdpEnvLinStatic(gym.Env):
 
 class MdpEnvLinVariable(MdpEnvLinStatic):
 
-  def __init__(self, seed=-1, size=10, prob=0.2, path="/tmp"):
-    MdpEnvLinStatic.__init__(self, seed, size, prob, path)
-    self.env = self._create_mdp(path, prob, size, seed)
+  def __init__(self, size=10, prob=0.2, path="/tmp"):
+    MdpEnvLinStatic.__init__(self, size, prob, path)
+    self.env = self._create_mdp(path, prob, size)
 
-  def _create_mdp(self, path, prob, size, seed):
+  def _create_mdp(self, path, prob, size):
     def _fill_reward(x):
       if (x == 0):
         return 0.1
@@ -78,9 +81,6 @@ class MdpEnvLinVariable(MdpEnvLinStatic):
         return 1
       else:
         return 0
-
-    if(seed!=-1):
-      np.random.seed(seed)
 
     stateGenerator = StateGenerator('name', 'reward')
     actionGenerator = ActionGenerator('name')
@@ -102,18 +102,23 @@ class MdpEnvLinVariable(MdpEnvLinStatic):
         .add_transition(states[i + 1], actions[1], {states[i + 2]: 1})
     # Visualize the MDP
     mdp.finalize()
-    mdp.visualize(path)
+    # mdp.visualize(path)
     return mdp
 
 class MdpEnvPlanarStatic(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, seed=-1, size=10, prob=0.2, path="/tmp"):
-      self.env = self._create_mdp(path, prob, size, seed)
+    def __init__(self, size=10, prob=0.2, path="/tmp"):
+      self.env = self._create_mdp(path, prob, size)
       # self.observation_space = spaces.Discrete(size + 1)
       self.action_space = spaces.Discrete(4)
 
-    def _create_mdp(self, path, prob, size, seed):
+    def seed(self, seed=None):
+      self.np_random, seed = seeding.np_random(seed)
+      np.random.seed(seed)
+      return [seed]
+
+    def _create_mdp(self, path, prob, size):
       def _fill_reward(x):
         if (x == (0,0)):
           return 0.1
@@ -121,9 +126,6 @@ class MdpEnvPlanarStatic(gym.Env):
           return 1
         else:
           return 0
-
-      if (seed != -1):
-        np.random.seed(seed)
 
       stateGenerator = StateGenerator('name', 'reward')
       actionGenerator = ActionGenerator('name')
@@ -155,7 +157,7 @@ class MdpEnvPlanarStatic(gym.Env):
 
       # Visualize the MDP
       mdp.finalize()
-      mdp.visualize(path)
+      # mdp.visualize(path)
       return mdp
 
     def step(self, action_id):
@@ -178,11 +180,11 @@ class MdpEnvPlanarStatic(gym.Env):
 
 class MdpEnvPlanarVariable(MdpEnvPlanarStatic):
 
-  def __init__(self, seed=-1, size=10, prob=0.2, path="/tmp"):
-    MdpEnvPlanarStatic.__init__(self, seed, size, prob, path)
-    self.env = self._create_mdp(path, prob, size, seed)
+  def __init__(self, size=10, prob=0.2, path="/tmp"):
+    MdpEnvPlanarStatic.__init__(self, size, prob, path)
+    self.env = self._create_mdp(path, prob, size)
 
-  def _create_mdp(self, path, prob, size, seed):
+  def _create_mdp(self, path, prob, size):
     def _fill_reward(x):
       if (x == (0, 0)):
         return 0.1
@@ -190,9 +192,6 @@ class MdpEnvPlanarVariable(MdpEnvPlanarStatic):
         return 1
       else:
         return 0
-
-    if (seed != -1):
-      np.random.seed(seed)
 
     stateGenerator = StateGenerator('name', 'reward')
     actionGenerator = ActionGenerator('name')
@@ -229,5 +228,5 @@ class MdpEnvPlanarVariable(MdpEnvPlanarStatic):
 
     # Visualize the MDP
     mdp.finalize()
-    mdp.visualize(path)
+    # mdp.visualize(path)
     return mdp
