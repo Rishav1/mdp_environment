@@ -43,7 +43,6 @@ def test_action_not_present():
 	a3 = g.generate_action(name='a3', reward=0)
 	m = MDPModel('Test')
 	m.add_actions([a0, a2])
-	print(m.states)
 	with pytest.raises(ActionNotPresent):
 		list(m.get_actions([a1.id, a3.id]))
 	assert type(next(m.get_actions(a0.id))) == Action
