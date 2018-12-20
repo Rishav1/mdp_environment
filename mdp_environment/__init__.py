@@ -1,17 +1,17 @@
 from gym.envs.registration import register
 
 register(
-	id='mdp-v0', 
-	entry_point='mdp_environment.envs:MdpEnvLinStatic')
+    id='mdp-v0',
+    entry_point='mdp_environment.envs:MdpEnvLinStatic')
 
 register(
-	id='mdp-v1',
-	entry_point='mdp_environment.envs:MdpEnvLinVariable')
+    id='mdp-v1',
+    entry_point='mdp_environment.envs:MdpEnvLinVariable')
 
 register(
-	id='mdp-v2',
-	entry_point='mdp_environment.envs:MdpEnvPlanarStatic')
+    id='mdp-v2',
+    entry_point='mdp_environment.envs:MdpEnvPlanarStatic')
 
 register(
-	id='mdp-v3',
-	entry_point='mdp_environment.envs:MdpEnvPlanarVariable')
+    id='mdp-v3',
+    entry_point='mdp_environment.envs:MdpEnvPlanarVariable')
