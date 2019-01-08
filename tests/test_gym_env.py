@@ -8,10 +8,9 @@ def _run_lin_mdp(key):
     env = gym.make(key)
     env.reset()
     for i in range(1000):
-        env.render(close=True)
+        env.render(close=False)
         _, reward, over, _ = env.step(env.action_space.sample())
-        if over:
-            print(i, reward)
+        if over:?!?jedi=0, ?!? (*_*value*_*, ..., sep, end, file, flush) ?!?jedi?!?
             env.reset()
 
 
@@ -41,3 +40,10 @@ def test_lin_env_v3():
         _run_lin_mdp("mdp-v3")
     except DefaultException:
         pytest.fail("{0}: Unexpected error ..".format("mdp-v3"))
+
+
+def test_lin_env_v4():
+    try:
+        _run_lin_mdp("mdp-v4")
+    except DefaultException:
+        pytest.fail("{0}: Unexpected error ..".format("mdp-v4"))

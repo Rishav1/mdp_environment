@@ -53,7 +53,7 @@ class MdpEnvLinStatic(gym.Env):
                 .add_transition(states[i + 1], actions[1], {states[i + 2]: 1})
         # Visualize the MDP
         mdp.finalize()
-        mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
+        # mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
         return mdp
 
     def step(self, action_id):
@@ -127,14 +127,14 @@ class MdpEnvLinVariable(MdpEnvLinStatic):
                 .add_transition(states[i + 1], actions[1], {states[i + 2]: 1})
         # Visualize the MDP
         mdp.finalize()
-        mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
+        # mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
         return mdp
 
 
 class MdpEnvPlanarStatic(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, size=10, prob=0.2, path="/tmp"):
+    def __init__(self, size=15, prob=0.2, path="/tmp"):
         self.viewer = None
         self.env = self._create_mdp(path, prob, size)
         self.observation_space = spaces.Discrete(size ** 2)
@@ -199,7 +199,7 @@ class MdpEnvPlanarStatic(gym.Env):
 
         # Visualize the MDP
         mdp.finalize()
-        mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
+        # mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
         return mdp
 
     def step(self, action_id):
@@ -240,7 +240,7 @@ class MdpEnvPlanarStatic(gym.Env):
 
 
 class MdpEnvPlanarVariable(MdpEnvPlanarStatic):
-    def __init__(self, size=10, prob=0.2, path="/tmp"):
+    def __init__(self, size=15, prob=0.2, path="/tmp"):
         MdpEnvPlanarStatic.__init__(self, size, prob, path)
         self.env = self._create_mdp(path, prob, size)
 
@@ -301,5 +301,95 @@ class MdpEnvPlanarVariable(MdpEnvPlanarStatic):
 
         # Visualize the MDP
         mdp.finalize()
-        mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
+        # mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
         return mdp
+
+class MdpEnvLinCorridor(gym.Env):
+    metadata = {'render.modes': ['human']}
+
+    def __init__(self, size=25, dim=10, path="/tmp"):
+        self.viewer = None
+        self.env = self._create_mdp(path, size, dim)
+        self.observation_space = spaces.Discrete(size)
+        self.action_space = spaces.Discrete(dim)
+        self.rewards = None
+        self.states = None
+
+    def seed(self, seed=None):
+        self.np_random, seed = seeding.np_random(seed)
+        np.random.seed(seed)
+        return [seed]
+
+    def _create_mdp(self, path, size, dim):
+        self.path = path
+        def _fill_reward(x):
+            if x == size - 1:
+                return 1
+            else:
+                return 0
+
+        state_generator = StateGenerator('name', 'reward')
+        action_generator = ActionGenerator('name')
+        states = [state_generator.generate_state(name="s" + str(x), reward=_fill_reward(x)) for x in range(size)]
+        actions = [action_generator.generate_action(name="A{}".format(name)) for name in range(dim)]
+        mdp = MDPModel('MdpEnvLinStatic') \
+            .add_states(states) \
+            .add_actions(actions) \
+            .add_init_states({states[0]: 1}) \
+            .add_final_states([states[size - 1]], 1000)
+
+        for i in range(size - 2):
+            actions_r = np.random.choice(dim, 2, replace=False)
+            for action in range(dim):
+                if action not in actions_r:
+                    mdp.add_transition(states[i + 1], actions[action], {states[i + 1]: 1})
+                elif action == actions_r[0]:
+                    mdp.add_transition(states[i + 1], actions[actions_r[0]], {states[i]: 1})
+                elif action == actions_r[1]:
+                    mdp.add_transition(states[i + 1], actions[actions_r[1]], {states[i + 2]: 1})
+
+        actions_r = np.random.choice(dim, 1, replace=False)
+        for action in range(dim):
+            if action not in actions_r:
+                mdp.add_transition(states[0], actions[action], {states[0]: 1})
+            else:
+                mdp.add_transition(states[0], actions[action], {states[1]: 1})
+
+        # Visualize the MDP
+        mdp.finalize()
+        # mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
+        return mdp
+
+    def step(self, action_id):
+        obs = self.env.transition(next(self.env.get_actions(action_id)))
+        reward = obs.reward
+        over = self.env.is_terminated()
+        self.rewards.append(reward)
+        self.states.append(obs)
+        info = {"rewards": self.rewards, "states": self.states}
+        return obs.id, reward, over, info
+
+    def reset(self):
+        obs = self.env.initialize()
+        self.rewards = []
+        self.states = [obs]
+        return obs.id
+
+    def render(self, mode='human', close=False):
+        if close:
+            if self.viewer is not None:
+                self.viewer.close()
+                self.viewer = None
+            return
+        img = self.env.visualize(file="{0}/{1}".format(self.path, self.__class__.__name__))
+        if mode == 'rgb_array':
+            return pyplot.imread(io.BytesIO(img))
+        elif mode == 'human':
+            from gym.envs.classic_control import rendering
+            if self.viewer is None:
+                self.viewer = rendering.SimpleImageViewer()
+            image = pyglet.image.load(filename="{0}/{1}".format(self.path, self.__class__.__name__))
+            self.viewer.imgshow(image)
+            return self.viewer.isopen
+        elif mode == 'png':
+            return img

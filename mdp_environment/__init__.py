@@ -15,3 +15,7 @@ register(
 register(
     id='mdp-v3',
     entry_point='mdp_environment.envs:MdpEnvPlanarVariable')
+
+register(
+    id='mdp-v4',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridor')
