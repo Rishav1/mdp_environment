@@ -16,8 +16,9 @@ class MdpEnvLinStatic(gym.Env):
 
     def __init__(self, size=15, prob=0.2, path="/tmp"):
         self.viewer = None
+        self.size = size
         self.env = self._create_mdp(path, prob, size)
-        self.observation_space = spaces.Discrete(size + 1)
+        self.observation_space = spaces.Box(low=0, high=1, shape=(size,), dtype=np.int32)
         self.action_space = spaces.Discrete(2)
         self.rewards = None
         self.states = None
@@ -63,13 +64,13 @@ class MdpEnvLinStatic(gym.Env):
         self.rewards.append(reward)
         self.states.append(obs)
         info = {"rewards": self.rewards, "states": self.states}
-        return obs.id, reward, over, info
+        return np.eye(self.size)[obs.id], reward, over, info
 
     def reset(self):
         obs = self.env.initialize()
         self.rewards = []
         self.states = [obs]
-        return obs.id
+        return np.eye(self.size)[obs.id]
 
     def render(self, mode='human', close=False):
         if close:
@@ -136,8 +137,10 @@ class MdpEnvPlanarStatic(gym.Env):
 
     def __init__(self, size=15, prob=0.2, path="/tmp"):
         self.viewer = None
+        self.path = path
         self.env = self._create_mdp(path, prob, size)
-        self.observation_space = spaces.Discrete(size ** 2)
+        self.size = size
+        self.observation_space = spaces.Box(low=0, high=1, shape=(size,size),dtype=np.int32)
         self.action_space = spaces.Discrete(4)
         self.rewards = None
         self.states = None
@@ -204,18 +207,25 @@ class MdpEnvPlanarStatic(gym.Env):
 
     def step(self, action_id):
         obs = self.env.transition(next(self.env.get_actions(action_id)))
+        observation = np.zeros((self.size, self.size))
+        observation.__setitem__(self.get_obs_index(obs.id), 1)
         reward = obs.reward
         over = self.env.is_terminated()
         self.rewards.append(reward)
         self.states.append(obs)
         info = {"rewards": self.rewards, "states": self.states}
-        return obs.id, reward, over, info
+        return observation, reward, over, info
+
+    def get_obs_index(self, id):
+        return (int(id % self.size), int(id / self.size))
 
     def reset(self):
         obs = self.env.initialize()
         self.rewards = []
         self.states = [obs]
-        return obs.id
+        observation = np.zeros((self.size, self.size))
+        observation.__setitem__(self.get_obs_index(obs.id), 1)
+        return observation
 
     def render(self, mode='human', close=False):
         if close:
@@ -307,10 +317,11 @@ class MdpEnvPlanarVariable(MdpEnvPlanarStatic):
 class MdpEnvLinCorridor(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, size=25, dim=10, path="/tmp"):
+    def __init__(self, size=25, dim=20, path="/tmp"):
         self.viewer = None
+        self.size = size
         self.env = self._create_mdp(path, size, dim)
-        self.observation_space = spaces.Discrete(size)
+        self.observation_space = spaces.Box(low=0, high=1, shape=(size,), dtype=np.int32)
         self.action_space = spaces.Discrete(dim)
         self.rewards = None
         self.states = None
@@ -367,13 +378,13 @@ class MdpEnvLinCorridor(gym.Env):
         self.rewards.append(reward)
         self.states.append(obs)
         info = {"rewards": self.rewards, "states": self.states}
-        return obs.id, reward, over, info
+        return np.eye(self.size)[obs.id], reward, over, info
 
     def reset(self):
         obs = self.env.initialize()
         self.rewards = []
         self.states = [obs]
-        return obs.id
+        return np.eye(self.size)[obs.id]
 
     def render(self, mode='human', close=False):
         if close:

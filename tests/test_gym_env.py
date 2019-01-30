@@ -8,9 +8,9 @@ def _run_lin_mdp(key):
     env = gym.make(key)
     env.reset()
     for i in range(1000):
-        env.render(close=False)
-        _, reward, over, _ = env.step(env.action_space.sample())
-        if over:?!?jedi=0, ?!? (*_*value*_*, ..., sep, end, file, flush) ?!?jedi?!?
+        # env.render(close=False)
+        obs, reward, over, _ = env.step(env.action_space.sample())
+        if over:
             env.reset()
 
 
