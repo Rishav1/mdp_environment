@@ -14,7 +14,7 @@ from mdp_environment.utils.state import StateGenerator
 class MdpEnvLinStatic(gym.Env):
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, size=15, prob=0.2, path="/tmp"):
+    def __init__(self, size=80, prob=0.2, path="/tmp"):
         self.viewer = None
         self.size = size
         self.env = self._create_mdp(path, prob, size)
@@ -95,7 +95,7 @@ class MdpEnvLinStatic(gym.Env):
 
 
 class MdpEnvLinVariable(MdpEnvLinStatic):
-    def __init__(self, size=15, prob=0.2, path="/tmp"):
+    def __init__(self, size=80, prob=0.2, path="/tmp"):
         MdpEnvLinStatic.__init__(self, size, prob, path)
         self.env = self._create_mdp(path, prob, size)
 

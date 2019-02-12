@@ -18,29 +18,30 @@ register(
 
 register(
     id='mdp-v4',
-    entry_point='mdp_environment.envs:MdpEnvLinCorridor')
+    entry_point='mdp_environment.envs:MdpEnvLinCorridor',
+    kwargs={"size": 45, "dim": 25})
 
 register(
-    id='mdp:2-v4',
+    id='mdp-v4:2',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
-    kwargs={"size": 25, "dim": 2})
+    kwargs={"size": 45, "dim": 2})
 
 register(
-        id='mdp:5-v4',
+        id='mdp-v4:5',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
-    kwargs={"size": 25, "dim": 5})
+    kwargs={"size": 45, "dim": 5})
 
 register(
-        id='mdp:10-v4',
+        id='mdp-v4:10',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
-    kwargs={"size": 25, "dim": 10})
+    kwargs={"size": 45, "dim": 10})
 
 register(
-        id='mdp:25-v4',
+        id='mdp-v4:25',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
-    kwargs={"size": 25, "dim": 25})
+    kwargs={"size": 45, "dim": 25})
 
 register(
-        id='mdp:50-v4',
+        id='mdp-v4:50',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
-    kwargs={"size": 25, "dim": 50})
+    kwargs={"size": 45, "dim": 50})
