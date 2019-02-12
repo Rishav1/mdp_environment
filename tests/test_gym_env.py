@@ -47,3 +47,9 @@ def test_lin_env_v4():
         _run_lin_mdp("mdp-v4")
     except DefaultException:
         pytest.fail("{0}: Unexpected error ..".format("mdp-v4"))
+
+def test_lin_env_v5():
+    try:
+        _run_lin_mdp("mdp-v5")
+    except DefaultException:
+        pytest.fail("{0}: Unexpected error ..".format("mdp-v5"))

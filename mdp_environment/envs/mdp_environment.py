@@ -404,3 +404,45 @@ class MdpEnvLinCorridor(gym.Env):
             return self.viewer.isopen
         elif mode == 'png':
             return img
+
+
+class MdpEnvLinCorridorTricky(MdpEnvLinCorridor):
+    def __init__(self, size=25, dim=20, path="/tmp", prob=0.2):
+        self.prob = prob
+        MdpEnvLinCorridor.__init__(self, size=size, dim=dim, path=path)
+
+    def _create_mdp(self, path, size, dim):
+        self.path = path
+
+        def _fill_reward(x):
+            if x == size - 1:
+                return 1
+            elif x == 0:
+                return 0.1
+            else:
+                return 0
+
+        state_generator = StateGenerator('name', 'reward')
+        action_generator = ActionGenerator('name')
+        states = [state_generator.generate_state(name="s" + str(x), reward=_fill_reward(x)) for x in range(size)]
+        actions = [action_generator.generate_action(name="A{}".format(name)) for name in range(dim)]
+        mdp = MDPModel('MdpEnvLinStatic') \
+            .add_states(states) \
+            .add_actions(actions) \
+            .add_init_states({states[1 + np.random.binomial(size - 3, self.prob)]: 1}) \
+            .add_final_states([states[0], states[size - 1]], 1000)
+
+        for i in range(size - 2):
+            actions_r = np.random.choice(dim, 2, replace=False)
+            for action in range(dim):
+                if action not in actions_r:
+                    mdp.add_transition(states[i + 1], actions[action], {states[i + 1]: 1})
+                elif action == actions_r[0]:
+                    mdp.add_transition(states[i + 1], actions[actions_r[0]], {states[i]: 1})
+                elif action == actions_r[1]:
+                    mdp.add_transition(states[i + 1], actions[actions_r[1]], {states[i + 2]: 1})
+
+        # Visualize the MDP
+        mdp.finalize()
+        mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
+        return mdp

@@ -22,6 +22,11 @@ register(
     kwargs={"size": 45, "dim": 25})
 
 register(
+    id='mdp-v5',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridorTricky',
+    kwargs={"size": 45, "dim": 25})
+
+register(
     id='mdp-v4:2',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
     kwargs={"size": 45, "dim": 2})
