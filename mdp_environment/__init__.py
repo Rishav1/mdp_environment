@@ -17,36 +17,51 @@ register(
     entry_point='mdp_environment.envs:MdpEnvPlanarVariable')
 
 register(
-    id='mdp-v4',
-    entry_point='mdp_environment.envs:MdpEnvLinCorridor',
-    kwargs={"size": 45, "dim": 25})
-
-register(
     id='mdp-v5',
     entry_point='mdp_environment.envs:MdpEnvLinCorridorTricky',
     kwargs={"size": 45, "dim": 25})
+register(
+    id='mdp-v5:2',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridorTricky',
+    kwargs={"size": 45, "dim": 2})
+register(
+    id='mdp-v5:5',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridorTricky',
+    kwargs={"size": 45, "dim": 5})
+register(
+    id='mdp-v5:10',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridorTricky',
+    kwargs={"size": 45, "dim": 10})
+register(
+    id='mdp-v5:25',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridorTricky',
+    kwargs={"size": 45, "dim": 25})
+register(
+    id='mdp-v5:50',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridorTricky',
+    kwargs={"size": 45, "dim": 50})
 
+register(
+    id='mdp-v4',
+    entry_point='mdp_environment.envs:MdpEnvLinCorridor',
+    kwargs={"size": 45, "dim": 25})
 register(
     id='mdp-v4:2',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
     kwargs={"size": 45, "dim": 2})
-
 register(
-        id='mdp-v4:5',
+    id='mdp-v4:5',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
     kwargs={"size": 45, "dim": 5})
-
 register(
-        id='mdp-v4:10',
+    id='mdp-v4:10',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
     kwargs={"size": 45, "dim": 10})
-
 register(
-        id='mdp-v4:25',
+    id='mdp-v4:25',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
     kwargs={"size": 45, "dim": 25})
-
 register(
-        id='mdp-v4:50',
+    id='mdp-v4:50',
     entry_point='mdp_environment.envs:MdpEnvLinCorridor',
     kwargs={"size": 45, "dim": 50})

@@ -444,5 +444,5 @@ class MdpEnvLinCorridorTricky(MdpEnvLinCorridor):
 
         # Visualize the MDP
         mdp.finalize()
-        mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
+        # mdp.visualize(file="{0}/{1}".format(path, self.__class__.__name__))
         return mdp
